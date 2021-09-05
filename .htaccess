@@ -1,0 +1,26 @@
+Options FollowSymlinks
+RewriteEngine on
+
+# file upload
+RewriteCond %{REQUEST_URI} !^!/(uploads)
+RewriteRule ^uploads/(.*)$ uploads/$1 [L]
+
+# Defult file yii
+RewriteCond %{REQUEST_URI} !^!/(frontend|backend)/web/(assets)
+RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [L]
+RewriteCond %{REQUEST_URI} !^!/admin/(assets)
+RewriteRule ^admin/assets/(.*)$ backend/web/assets/$1 [L]
+
+# admin assets file access
+RewriteCond %{REQUEST_URI} !^!/(admin)/(assets|css|img)
+RewriteRule ^admin/assets/(.*)$ backend/web/assets/$1 [L]
+RewriteRule ^admin(.+)?$ backend/web/$1 [L,PT]
+
+
+# Frontend theme(assets|css|img|js|fonts) file access
+RewriteCond %{REQUEST_URI} !^!/theme
+RewriteRule ^theme/(.*)$ frontend/web/theme/$1 [L]
+RewriteCond %{REQUEST_URI} !^!/(frontend|backend)/web/theme/
+RewriteCond %{REQUEST_FILENAME} !-f [OR]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ frontend/web/$1 [L]
